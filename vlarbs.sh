@@ -35,6 +35,21 @@ getuser() { \
 		dialog --title "Create user first then re-run script" --msgbox "Please create your user and password before running LARBS. Note that you can use the user you created in the Void Linux installation process.\\n\\nIf you want to make a new user, you will want to run a command like this, adding your user to all the needed groups and creating a home directory:\\n\\n$ useradd -m -G wheel,users,audio,video,cdrom,input -s /bin/bash <user>\\n$ passwd <user>" 14 75 && exit
 	return 0 ;}
 
+
+githubuser() { \
+	gituser=$(dialog --inputbox "First, please enter a name for the user account for which you'd like to install LARBS." 10 60 3>&1 1>&2 2>&3 3>&1) || exit
+	while ! echo "$name" | grep "^[a-z_][a-z0-9_-]*$" >/dev/null 2>&1; do
+		gituser=$(dialog --no-cancel --inputbox "GitHub user not valid. Give a username beginning with a letter, with only lowercase letters, - or _." 10 60 3>&1 1>&2 2>&3 3>&1)
+	done
+	;}
+
+getmailuser() { \
+	name=$(dialog --inputbox "First, please enter a name for the user account for which you'd like to install LARBS." 10 60 3>&1 1>&2 2>&3 3>&1) || exit
+	while ! echo "$mailuser" | grep "^[a-z_][a-z0-9_-]*$" >/dev/null 2>&1; do
+		name=$(dialog --no-cancel --inputbox "Mail not valid" 10 60 3>&1 1>&2 2>&3 3>&1)
+	done
+	;}
+
 preinstallmsg() { \
 	dialog --title "Let's get this party started!" --yes-label "Let's go!" --no-label "No, nevermind!" --yesno "The rest of the installation will now be totally automated, so you can sit back and relax.\\n\\nIt will take some time, but when done, you can relax even more with your complete system.\\n\\nNow just press <Let's go!> and the system will begin installation!" 13 60 || { clear; exit; }
 	}
@@ -59,6 +74,14 @@ pipinstall() { \
 	command -v pip3 || xbps-install -Sy python3-pip >/dev/null 2>&1
 	yes | sudo -u "$name" pip3 install --user "$1"
 	}
+
+sshgithub() { \
+	ssh-keygen -t rsa -b 4096 -C "$mailuser"
+	curl -u "$gituser" \
+   		--data "{\"title\":\"DevVm_`date +%Y%m%d%H%M%S`\",\"key\":\"`cat ~/.ssh/id_rsa.pub`\"}" \
+    	https://api.github.com/user/keys
+	}
+
 
 installationloop() { \
 	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
