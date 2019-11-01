@@ -77,9 +77,7 @@ pipinstall() { \
 
 sshgithub() { \
 	ssh-keygen -t rsa -b 4096 -C "$mailuser"
-	curl -u "$gituser" \
-   		--data "{\"title\":\"DevVm_`date +%Y%m%d%H%M%S`\",\"key\":\"`cat ~/.ssh/id_rsa.pub`\"}" \
-    	https://api.github.com/user/keys
+	curl -u "user:pass" --data '{"title":"test-key","key":"'"$(cat ~/.ssh/id_rsa.pub)"'"}' https://api.github.com/user/keys
 	}
 
 
