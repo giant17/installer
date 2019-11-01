@@ -46,18 +46,18 @@ maininstall() { # Installs all needed programs from main repo.
 
 gitmakeinstall() {
 	repo="$(basename "$1")"
-	repodir="/home/$name/repos/$repo"
+	repodir="/home/$name/repos/forks/$repo"
 	dialog --title "LARBS Installation" --infobox "Installing \`$(basename "$1")\` ($n of $total) via \`git\` and \`make\`. $(basename "$1") $2" 5 70
 	sudo -u "$name" mkdir -p "$repodir"
-	sudo -u "$name" git clone --depth 1 "$1" "/home/$name/repos/$repo" >/dev/null 2>&1
+	sudo -u "$name" git clone --depth 1 "$1" "/home/$name/repos/forks/$repo" >/dev/null 2>&1
 	cd "$repodir" || exit
 	make install >/dev/null 2>&1
 	cd /tmp || return ;}
 
 pipinstall() { \
 	dialog --title "LARBS Installation" --infobox "Installing the Python package \`$1\` ($n of $total). $1 $2" 5 70
-	command -v pip || xbps-install -Sy python-pip >/dev/null 2>&1
-	yes | pip install "$1"
+	command -v pip3 || xbps-install -Sy python3-pip >/dev/null 2>&1
+	yes | sudo -u "$name" pip3 install --user "$1"
 	}
 
 installationloop() { \
@@ -76,11 +76,13 @@ installationloop() { \
 putgitrepo() { # Downlods a gitrepo $1 and places the files in $2 only overwriting conflicts
 	[ -z "$3" ] && branch="master" || branch="$repobranch"
 	dialog --infobox "Downloading and installing config files..." 4 60
-	dir=$(mktemp -d)
-	[ ! -d "$2" ] && mkdir -p "$2" && chown -R "$name:wheel" "$2"
-	chown -R "$name:wheel" "$dir"
-	sudo -u "$name" git clone -b "$branch" --depth 1 "$1" "$dir/gitrepo" >/dev/null 2>&1 &&
-	sudo -u "$name" cp -rfT "$dir/gitrepo" "$2"
+	sudo -u "$name" mkdir -p "/home/$name/repos/linux"
+	sudo -u "$name" git clone "$1" "/home/$name/repos/linux/dotfiles"
+	cd "/home/$name/repos/linux/dotfiles"
+	rm "/home/$gian/.bashrc"
+	rm "/home/$gian/.bash_profile"
+	rm "/home/$gian/.inputrc"
+	sudo -u "$name" stow -vt "/home/$name" *
 	}
 
 serviceinit() { for service in "$@"; do
