@@ -14,8 +14,8 @@ while getopts ":r:p:b:h" o; do case "${o}" in
 esac done
 
 # DEFAULTS:
-[ -z "$dotfilesrepo" ] && dotfilesrepo="https://github.com/lukesmithxyz/voidrice.git" && repobranch="voiddwm"
-[ -z "$progsfile" ] && progsfile="https://raw.githubusercontent.com/giant17/installer/master/vprogs.csv"
+[ -z "$dotfilesrepo" ] && dotfilesrepo="https://github.com/giant17/dotfiles"
+[ -z "$progsfile" ] && progsfile="https://raw.githubusercontent.com/giant17/installer/master/progs.csv"
 [ -z "$repobranch" ] && repobranch="master"
 
 ### FUNCTIONS ###
@@ -131,7 +131,7 @@ installationloop
 #rm -f "/home/$name/README.md" "/home/$name/LICENSE"
 
 # Enable services here.
-serviceinit alsa wpa_supplicant dbus
+serviceinit wpa_supplicant dbus crond acpid thermald
 
 # Most important command! Get rid of the beep!
 systembeepoff
