@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Push a dotfiles repo and sym link all data
+
+
+dotpath="$HOME/repos/linux/dotfiles"
+
+if [-d "$dotpath" ]
+	hub pull dotfiles "$dotpath"
+else
+	mkdir -p "$HOME/repos/linux"
+	hub clone dotfiles "$dotpath"
+fi
+
+# TODO: remove existing
+# TODO: stow everything
+
+stow -vt ~ [a-z]*

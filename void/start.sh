@@ -41,14 +41,14 @@ githubuser() { \
 	while ! echo "$name" | grep "^[a-z_][a-z0-9_-]*$" >/dev/null 2>&1; do
 		gituser=$(dialog --no-cancel --inputbox "GitHub user not valid. Give a username beginning with a letter, with only lowercase letters, - or _." 10 60 3>&1 1>&2 2>&3 3>&1)
 	done
-	;}
+	}
 
 getmailuser() { \
 	name=$(dialog --inputbox "First, please enter a name for the user account for which you'd like to install LARBS." 10 60 3>&1 1>&2 2>&3 3>&1) || exit
 	while ! echo "$mailuser" | grep "^[a-z_][a-z0-9_-]*$" >/dev/null 2>&1; do
 		name=$(dialog --no-cancel --inputbox "Mail not valid" 10 60 3>&1 1>&2 2>&3 3>&1)
 	done
-	;}
+	}
 
 preinstallmsg() { \
 	dialog --title "Let's get this party started!" --yes-label "Let's go!" --no-label "No, nevermind!" --yesno "The rest of the installation will now be totally automated, so you can sit back and relax.\\n\\nIt will take some time, but when done, you can relax even more with your complete system.\\n\\nNow just press <Let's go!> and the system will begin installation!" 13 60 || { clear; exit; }
