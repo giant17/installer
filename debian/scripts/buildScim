@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# Compile and install scim
+
+dotpath="$HOME/repos/starred"
+scimpath="$dotpath/scim"
+
+if [-d "$scimpath" ]
+	sudo -u "$name" hub pull scim "$scimpath"
+else
+	sudo -u "$name" mkdir -p "$dotpath"
+	sudo -u "$name" hub clone dotfiles "$scimpath"
+fi
+
+sudo apt-get install -y bison libncurses5-dev libncursesw5-dev libxml2-dev libzip-dev
+
+
+cd /tmp
+git clone https://github.com/jmcnamara/libxlsxwriter.git
+cd libxlsxwriter/
+sudo -u "$name" make
+make install
+ldconfig
+
+cd "$dotpath/scim"
+git clone https://github.com/andmarti1424/sc-im.git
+cd sc-im/src
+sudo -u "$name" make
+make install
+sudo -u "$name" make clean

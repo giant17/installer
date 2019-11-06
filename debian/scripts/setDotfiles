@@ -6,13 +6,12 @@
 dotpath="$HOME/repos/linux/dotfiles"
 
 if [-d "$dotpath" ]
-	hub pull dotfiles "$dotpath"
+	sudo -u "$name" hub pull dotfiles "$dotpath"
 else
-	mkdir -p "$HOME/repos/linux"
-	hub clone dotfiles "$dotpath"
+	sudo -u "$name" mkdir -p "$HOME/repos/linux"
+	sudo -u "$name" hub clone dotfiles "$dotpath"
 fi
 
 # TODO: remove existing
-# TODO: stow everything
 
-stow -vt ~ [a-z]*
+sudo -u "$name" stow -vt "$HOME" [a-z]*

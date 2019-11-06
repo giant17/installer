@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Compile and install my own version of dmenu
+
+dotpath="$HOME/repos/forks"
+dmenupath="$dotpath/dmenu"
+
+if [-d "$dmenupath" ]
+	sudo -u "$name" hub pull dmenu "$dmenupath"
+else
+	sudo -u "$name" mkdir -p "$dotpath"
+	sudo -u "$name" hub clone dotfiles "$dmenupath"
+fi
+
+cd "$dotpath/dmenu"
+
+sudo -u "$name" make
+make install
+sudo -u "$name" make clean
+

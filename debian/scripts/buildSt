@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Compile and install my own version of St
+
+dotpath="$HOME/repos/forks"
+stpath="$dotpath/st"
+
+if [-d "$stpath" ]
+	sudo -u "$name" hub pull st "$stpath"
+else
+	sudo -u "$name" mkdir -p "$dotpath"
+	sudo -u "$name" hub clone dotfiles "$stpath"
+fi
+
+cd "$dotpath/st"
+
+sudo -u "$name" make
+make install
+sudo -u "$name" make clean

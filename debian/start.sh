@@ -38,7 +38,7 @@ githubssh() {
 
 rinstall() {
 	for app in $(cat "$1"); do
-		# TODO: R install
+		sudo R -e 'install.packages("'$app'",repos="http://cran.us.r-project.org")'
 	done
 }
 

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Script that build Go and lf
+
+cd /tmp
+curl -O https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz
+tar xvf go1.13.1.linux-amd64.tar.gz
+mv go /usr/local
+
+. ~/.bashrc
+
+# Install lf
+sudo -u "$name" go get -u github.com/gokcehan/lf

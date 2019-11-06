@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Compile and install my own version of sent
+
+dotpath="$HOME/repos/forks"
+sentpath="$dotpath/sent"
+
+if [-d "$sentpath" ]
+	sudo -u "$name" hub pull sent "$sentpath"
+else
+	sudo -u "$name" mkdir -p "$dotpath"
+	sudo -u "$name" hub clone dotfiles "$sentpath"
+fi
+
+cd "$dotpath/sent"
+
+sudo -u "$name" make
+make install
+sudo -u "$name" make clean
+

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Compile and install my own version of htop
+
+dotpath="$HOME/repos/forks"
+htoppath="$dotpath/htop"
+
+if [-d "$htoppath" ]
+	sudo -u "$name" hub pull htop "$htoppath"
+else
+	sudo -u "$name" mkdir -p "$dotpath"
+	sudo -u "$name" hub clone dotfiles "$htoppath"
+fi
+
+cd "$dotpath/htop"
+
+sudo -u "$name" ./autogen.sh
+sudo -u "$name" ./configure
+sudo -u "$name" make
+
+make install
+sudo -u "$name" make clean

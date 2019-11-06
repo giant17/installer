@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Compile and install my own version of DWM
+
+dotpath="$HOME/repos/forks"
+dwmpath="$dotpath/dwm"
+
+if [-d "$dwmpath" ]
+	sudo -u "$name" hub pull dwm "$dwmpath"
+else
+	sudo -u "$name" mkdir -p "$dotpath"
+	sudo -u "$name" hub clone dotfiles "$dwmpath"
+fi
+
+cd "$dotpath/dwm"
+
+sudo -u "$name" make
+make install
+sudo -u "$name" make clean
