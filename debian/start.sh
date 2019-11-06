@@ -28,10 +28,11 @@ gitusermail() {
 }
 
 githubssh() {
-	ssh-keygen -t rsa -b 4096 -C "$email"
+	sudo -u "$name" ssh-keygen -t rsa -b 4096 -C "$email"
 	githubkey=$(cat /home/"$name"/.ssh/id_rsa.pub)
+	hostname=$(cat /proc/sys/kernel/hostname)
 	curl -u "$githubuser" \
-	    --data "{\"title\":\"DevVm_`date +%Y%m%d%H%M%S`\",\"key\":\"$githubkey\"}" \
+	    --data "{\"title\":\"$hostname\",\"key\":\"$githubkey\"}" \
 	    https://api.github.com/user/keys
 }
 
@@ -92,6 +93,8 @@ laptopinstall() {
 	maininstall "general"
 	maininstall "pc"
 }
+
+HOME="/home/$name"
 
 initialize || error "Error in intialize"
 getuser || error "Error in intialize"
