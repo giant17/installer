@@ -50,7 +50,7 @@ pipinstall() {
 
 scriptinstall() {
 	for script in $(cat "$1"); do
-		bash "$SCRIPTS/$script"
+		bash /tmp/scripts_folder/$script
 	done
 }
 
@@ -73,10 +73,10 @@ systembeepoff() {
 }
 
 maininstall() {
-	curl -Ls "PATH/$1/progs" > /tmp/progs
-	curl -Ls "PATH/$1/r" > /tmp/r
-	curl -Ls "PATH/$1/python" > /tmp/python
-	curl -Ls "PATH/$1/scripts" > /tmp/scripts
+	hub clone installer /tmp/installer
+	cp /tmp/installer/debian/progs/$1/* /tmp
+
+	cp -r /tmp/installer/debian/scripts /tmp/scripts_folder
 
 	aptinstall /tmp/progs
 	rinstall /tmp/r
@@ -97,9 +97,9 @@ laptopinstall() {
 HOME="/home/$name"
 
 initialize || error "Error in intialize"
-getuser || error "Error in intialize"
-gitusermail || error "Error in intialize"
-githubssh || error "Error in intialize"
+getuser || error "Error in getuser"
+gitusermail || error "Error in gitusermail"
+githubssh || error "Error in githubssh"
 
 case "$1" in
 	"--laptop") laptopinstall;;
@@ -107,7 +107,7 @@ case "$1" in
 	"*") maininstall "general";;
 esac
 
-
+systembeepoff || error "Error in systembeepoff."
 
 
 
